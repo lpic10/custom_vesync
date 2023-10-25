@@ -109,13 +109,14 @@ class VeSyncHumidifierHA(VeSyncDevice, HumidifierEntity):
     def available_modes(self) -> list[str]:
         """Return the available mist modes."""
         modes = []
-        for vs_mode in self.smarthumidifier.mist_modes:
-            ha_mode = _get_ha_mode(vs_mode)
+        if self.smarthumidifier.mist_modes is not None:
+            for vs_mode in self.smarthumidifier.mist_modes:
+                ha_mode = _get_ha_mode(vs_mode)
 
-            if ha_mode is None:
-                continue
+                if ha_mode is None:
+                    continue
 
-            modes.append(ha_mode)
+                modes.append(ha_mode)
 
         return modes
 
@@ -137,11 +138,14 @@ class VeSyncHumidifierHA(VeSyncDevice, HumidifierEntity):
     @property
     def is_on(self) -> bool:
         """Return True if humidifier is on."""
-        return self.smarthumidifier.enabled  # device_status is always on
+        return self.smarthumidifier.enabled  # type: ignore # device_status is always on
 
     @property
     def unique_info(self) -> str:
         """Return the ID of this humidifier."""
+        if self.smarthumidifier.uuid is None:
+            return ""
+
         return self.smarthumidifier.uuid
 
     @property
@@ -175,7 +179,8 @@ class VeSyncHumidifierHA(VeSyncDevice, HumidifierEntity):
             raise ValueError(
                 "{mode} is not one of the valid available modes: {self.available_modes}"
             )
-        if self.smarthumidifier.set_humidity_mode(_get_vs_mode(mode)):
+        curmode = _get_vs_mode(mode)
+        if curmode is not None and self.smarthumidifier.set_humidity_mode(curmode):
             self.schedule_update_ha_state()
         else:
             raise ValueError("An error occurred while setting mode.")

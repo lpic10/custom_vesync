@@ -24,8 +24,6 @@ from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
-# mypy: disallow-any-generics
-
 SET_MODE_SCHEMA = cv.DEVICE_ACTION_BASE_SCHEMA.extend(
     {
         vol.Required(CONF_TYPE): "set_mode",

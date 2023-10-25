@@ -37,7 +37,7 @@ def is_air_purifier(device_type: str) -> bool:
     return model_features(device_type)["module"] in VS_FAN_TYPES
 
 
-async def async_process_devices(hass, manager):
+async def async_process_devices(_hass, manager):
     """Assign devices to proper component."""
     devices = {
         VS_SWITCHES: [],

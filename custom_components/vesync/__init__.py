@@ -95,7 +95,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
         manager = hass.data[DOMAIN][config_entry.entry_id][VS_MANAGER]
         dev_dict = await async_process_devices(hass, manager)
 
-        def _add_new_devices(platform: str) -> None:
+        def _add_new_devices(platform: Platform) -> None:
             """Add new devices to hass."""
             old_devices = hass.data[DOMAIN][config_entry.entry_id][PLATFORMS[platform]]
             if new_devices := list(

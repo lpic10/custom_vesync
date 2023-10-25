@@ -146,7 +146,7 @@ class VeSyncFanHA(VeSyncDevice, FanEntity):
 
     def set_preset_mode(self, preset_mode):
         """Set the preset mode of device."""
-        if preset_mode not in self.preset_modes:
+        if self.preset_modes is None or preset_mode not in self.preset_modes:
             raise ValueError(
                 "{preset_mode} is not one of the valid preset modes: {self.preset_modes}"
             )
@@ -165,9 +165,8 @@ class VeSyncFanHA(VeSyncDevice, FanEntity):
 
     def turn_on(
         self,
-        speed: str = None,
-        percentage: int = None,
-        preset_mode: str = None,
+        percentage: int | None = None,
+        preset_mode: str | None = None,
         **kwargs,
     ) -> None:
         """Turn the device on."""

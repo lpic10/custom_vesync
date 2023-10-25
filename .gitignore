@@ -3,3 +3,7 @@
 **/__pycache__/**
 Config/**
 .trunk/logs
+include
+lib
+lib64
+bin
